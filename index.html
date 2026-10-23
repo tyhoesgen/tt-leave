@@ -15,47 +15,54 @@ body{margin:0;font:17px -apple-system,system-ui,sans-serif;background:#0d0f12;co
 .r{display:inline-block;background:#d93a2b;color:#fff;border-radius:6px;padding:1px 7px;font-weight:700;margin-right:6px}
 .alt{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #23272e;font-size:16px}
 .go{color:#3ddc84}.soon{color:#ffb020}
+.seg{font-size:15px;color:#c9ced4;margin:7px 0}.seg.w{color:#8fd3ff}.seg.wt{color:#ffb020}.seg.tot{color:#9aa3ad;margin-top:10px}
+.mode{display:flex;gap:8px;margin:-10px 0 18px}.mode button{flex:1;padding:9px;border:0;border-radius:10px;background:#1d2127;color:#aab;font-size:15px}.mode button.on{background:#2b5fd9;color:#fff}
 .foot{color:#5f6873;font-size:13px;text-align:center;margin-top:14px}
 </style></head><body>
 <div class="tabs"><button id="tg" onclick="setDir('gabby')">To Gabby's</button><button id="th" onclick="setDir('home')">Home</button></div>
+<div class="mode"><button id="mf" onclick="setMode('fast')">Fastest</button><button id="ml" onclick="setMode('less')">Less walking</button></div>
 <div id="out"><div class="sub">Loading live TTC times...</div></div>
 <div class="foot" id="foot"></div>
 <script>
-const C={"cfg": {"gabby": {"door": 3.5, "options": [{"name": "510 north, then 506 east", "legs": [{"routes": ["510"], "board": [7353], "alight": [7347], "ride": 8, "walk0": {"7353": 5.6}, "after": {"7347": {"16862": 1.47, "843": 1.19}}}, {"routes": ["506"], "board": [16862, 843], "alight": [753], "ride": 13, "walk0": null, "after": {"753": 0.97}}]}, {"name": "510 north, then 505 east", "legs": [{"routes": ["510"], "board": [7353], "alight": [7349], "ride": 5, "walk0": {"7353": 5.6}, "after": {"7349": {"2189": 1.12}}}, {"routes": ["505"], "board": [2189], "alight": [2118], "ride": 12, "walk0": null, "after": {"2118": 9.11}}]}, {"name": "Walk to Dundas, 505 east", "legs": [{"routes": ["505"], "board": [2189], "alight": [2118], "ride": 12, "walk0": {"2189": 14.43}, "after": {"2118": 9.11}}]}, {"name": "504 east to Jarvis, walk up", "legs": [{"routes": ["504"], "board": [15649], "alight": [15636], "ride": 14, "walk0": {"15649": 0.82}, "after": {"15636": 21.51}}]}]}, "home": {"door": 4, "options": [{"name": "506 west, then 510 south", "legs": [{"routes": ["506"], "board": [754], "alight": [16861, 844], "ride": 13, "walk0": {"754": 1.31}, "after": {"16861": {"8120": 1.8}, "844": {"8120": 1.2}}}, {"routes": ["510"], "board": [8120], "alight": [8126], "ride": 8, "walk0": null, "after": {"8126": 5.37}}]}, {"name": "505 west, then 510 south", "legs": [{"routes": ["505"], "board": [2119], "alight": [2190], "ride": 12, "walk0": {"2119": 8.89}, "after": {"2190": {"8121": 1.08}}}, {"routes": ["510"], "board": [8121], "alight": [8126], "ride": 5, "walk0": null, "after": {"8126": 5.37}}]}, {"name": "505 west, walk down Spadina", "legs": [{"routes": ["505"], "board": [2119], "alight": [2190], "ride": 12, "walk0": {"2119": 8.89}, "after": {"2190": 15.01}}]}, {"name": "Walk to King, 504 west", "legs": [{"routes": ["504"], "board": [15635], "alight": [10176], "ride": 14, "walk0": {"15635": 21.32}, "after": {"10176": 1.21}}]}]}}, "names": {"15649": "King & Portland (eastbound)", "10176": "King & Portland (westbound)", "15636": "King & Jarvis (eastbound)", "15635": "King & Jarvis (westbound)", "7353": "Spadina & King (northbound)", "8126": "Spadina & King (southbound)", "7349": "Spadina & Dundas (northbound)", "8121": "Spadina & Dundas (southbound)", "7347": "Spadina & College (northbound)", "8120": "Spadina & College (southbound)", "843": "College & Spadina (eastbound)", "16862": "College & Spadina east side (eastbound)", "844": "College & Spadina (westbound)", "16861": "Spadina & College north side (westbound bus)", "753": "Carlton & Jarvis (eastbound)", "754": "Carlton & Jarvis (westbound)", "2189": "Dundas & Spadina (eastbound)", "2190": "Dundas & Spadina (westbound)", "2118": "Dundas & Jarvis (eastbound)", "2119": "Dundas & Jarvis (westbound)"}, "margin": 1, "xfer": 1};
+const C={"cfg": {"gabby": {"door": 3.5, "options": [{"name": "510 north, then 506 east", "legs": [{"routes": ["510"], "board": [7353], "alight": [7347], "ride": 8, "walkin": {"start7353": 448}}, {"routes": ["506"], "board": [16862, 843], "alight": [753], "ride": 13, "walkin": {"7347-16862": 118, "7347-843": 95}}], "final": {"753": 77}}, {"name": "510 north, then 505 east", "legs": [{"routes": ["510"], "board": [7353], "alight": [7349], "ride": 5, "walkin": {"start7353": 448}}, {"routes": ["505"], "board": [2189], "alight": [2118], "ride": 12, "walkin": {"7349-2189": 90}}], "final": {"2118": 729}}, {"name": "Walk to Dundas, 505 east", "legs": [{"routes": ["505"], "board": [2189], "alight": [2118], "ride": 12, "walkin": {"start2189": 1154}}], "final": {"2118": 729}}, {"name": "504 east to Jarvis, walk up", "legs": [{"routes": ["504"], "board": [15649], "alight": [15636], "ride": 14, "walkin": {"start15649": 66}}], "final": {"15636": 1721}}, {"name": "504 east, then 75 north", "legs": [{"routes": ["504"], "board": [15649], "alight": [4145], "ride": 16, "walkin": {"start15649": 66}}, {"routes": ["75"], "board": [7322], "alight": [7318], "ride": 6, "walkin": {"4145-7322": 28}}], "final": {"7318": 491}}]}, "home": {"door": 4, "options": [{"name": "506 west, then 510 south", "legs": [{"routes": ["506"], "board": [754], "alight": [16861, 844], "ride": 13, "walkin": {"start754": 105}}, {"routes": ["510"], "board": [8120], "alight": [8126], "ride": 8, "walkin": {"16861-8120": 144, "844-8120": 96}}], "final": {"8126": 430}}, {"name": "505 west, then 510 south", "legs": [{"routes": ["505"], "board": [2119], "alight": [2190], "ride": 12, "walkin": {"start2119": 711}}, {"routes": ["510"], "board": [8121], "alight": [8126], "ride": 5, "walkin": {"2190-8121": 87}}], "final": {"8126": 430}}, {"name": "505 west, walk down Spadina", "legs": [{"routes": ["505"], "board": [2119], "alight": [2190], "ride": 12, "walkin": {"start2119": 711}}], "final": {"2190": 1201}}, {"name": "Walk to King, 504 west", "legs": [{"routes": ["504"], "board": [15635], "alight": [10176], "ride": 14, "walkin": {"start15635": 1706}}], "final": {"10176": 97}}, {"name": "75 south, then 504 west", "legs": [{"routes": ["75"], "board": [7319], "alight": [7323], "ride": 6, "walkin": {"start7319": 453}}, {"routes": ["504"], "board": [4146], "alight": [10176], "ride": 16, "walkin": {"7323-4146": 31}}], "final": {"10176": 97}}]}}, "names": {"15649": "King & Portland (eastbound)", "10176": "King & Portland (westbound)", "15636": "King & Jarvis (eastbound)", "15635": "King & Jarvis (westbound)", "7353": "Spadina & King (northbound)", "8126": "Spadina & King (southbound)", "7349": "Spadina & Dundas (northbound)", "8121": "Spadina & Dundas (southbound)", "7347": "Spadina & College (northbound)", "8120": "Spadina & College (southbound)", "843": "College & Spadina (eastbound)", "16862": "College & Spadina east side (eastbound)", "844": "College & Spadina (westbound)", "16861": "Spadina & College north side (westbound bus)", "753": "Carlton & Jarvis (eastbound)", "754": "Carlton & Jarvis (westbound)", "2189": "Dundas & Spadina (eastbound)", "2190": "Dundas & Spadina (westbound)", "2118": "Dundas & Jarvis (eastbound)", "2119": "Dundas & Jarvis (westbound)", "4145": "King & Sherbourne (eastbound)", "4146": "King & Sherbourne (westbound)", "7322": "Sherbourne & King (northbound)", "7323": "Sherbourne & King (southbound)", "7318": "Sherbourne & Gerrard (northbound)", "7319": "Sherbourne & Gerrard (southbound)"}, "rnames": {"504": "504 King", "505": "505 Dundas", "506": "506 Carlton", "510": "510 Spadina", "75": "75 Sherbourne bus"}, "walk": 80, "margin": 1, "xfer": 1};
 const FEED=id=>`https://retro.umoiq.com/service/publicXMLFeed?command=predictions&a=ttc&stopId=${id}`;
-let dir=localStorage.dir||'gabby', plans=[], fetchedAt=0;
-function setDir(d){dir=localStorage.dir=d;plans=[];render();load();}
+let dir=localStorage.dir||'gabby', mode=localStorage.mode||'fast', front=[], all=[], fetchedAt=0;
+function setDir(d){dir=localStorage.dir=d;front=[];all=[];fetchedAt=0;render();load();}
+function setMode(m){mode=localStorage.mode=m;render();}
 async function fetchStop(id){
   try{const t=await (await fetch(FEED(id),{cache:'no-store'})).text();
     const x=new DOMParser().parseFromString(t,'text/xml');const out=[];
-    x.querySelectorAll('predictions').forEach(p=>p.querySelectorAll('prediction').forEach(q=>out.push({
-      route:p.getAttribute('routeTag'),vehicle:q.getAttribute('vehicle'),t:+q.getAttribute('epochTime')/1000})));
+    x.querySelectorAll('predictions').forEach(p=>p.querySelectorAll('direction').forEach(d=>d.querySelectorAll('prediction').forEach(q=>out.push({
+      route:p.getAttribute('routeTag'),vehicle:q.getAttribute('vehicle'),t:+q.getAttribute('epochTime')/1000,
+      bus:/bus/i.test(q.getAttribute('dirTag')||'')}))));
     return out;}catch(e){return []}
 }
+const rname=(r,b)=>{const n=C.rnames[r]||r;return b&&!/bus/i.test(n)?n+' (replacement bus)':n};
 async function load(){
   const d=C.cfg[dir], ids=new Set();
   d.options.forEach(o=>o.legs.forEach(l=>[...l.board,...l.alight].forEach(s=>ids.add(s))));
   const list=[...ids], res=await Promise.all(list.map(fetchStop)), P={};
   list.forEach((s,i)=>P[s]=res[i]);
-  const now=Date.now()/1000, door=d.door*60, all=[];
+  const now=Date.now()/1000, door=d.door*60, A=[];
   for(const o of d.options){
-    const go=(i,ready,prevAlight,steps,leave)=>{
-      const leg=o.legs[i];
-      if(i===o.legs.length){all.push({opt:o.name,leave,arrive:ready+o.legs[i-1].after[prevAlight]*60,steps});return;}
-      const seen=new Set();
+    const go=(i,free,prev,segs,leave)=>{
+      if(i===o.legs.length){const m=o.final[prev];const S=[...segs,{k:'walk',m,to:'the door'}];
+        A.push({leave,arrive:free+m/C.walk*60,segs:S,walk:S.filter(x=>x.k==='walk').reduce((a,x)=>a+x.m/C.walk,0),
+          wait:S.filter(x=>x.k==='wait').reduce((a,x)=>a+x.min,0)});return;}
+      const leg=o.legs[i], seen=new Set();
       for(const b of leg.board){
-        const w=(i===0?leg.walk0[b]:o.legs[i-1].after[prevAlight][b])*60;
+        const m=i===0?leg.walkin['start'+b]:leg.walkin[prev+'-'+b], w=m/C.walk*60;
         for(const v of P[b].filter(v=>leg.routes.includes(v.route)).sort((a,c)=>a.t-c.t)){
           if(seen.has(v.vehicle))continue;
-          let lv=leave;
-          if(i===0){lv=v.t-w-C.margin*60-door;if(lv<now)continue;}
-          else if(v.t<ready+w+C.xfer*60)continue;
+          let lv=leave,at;
+          if(i===0){lv=v.t-w-C.margin*60-door;if(lv<now)continue;at=v.t-C.margin*60;}
+          else{at=free+w;if(v.t<at+C.xfer*60)continue;}
           seen.add(v.vehicle);
-          let off=null,offStop=leg.alight[0];
-          for(const a of leg.alight){const m=P[a].filter(x=>x.vehicle===v.vehicle&&x.t>v.t).map(x=>x.t);
-            if(m.length){off=Math.min(...m);offStop=a;break;}}
+          let off=null,os=leg.alight[0];
+          for(const a of leg.alight){const h=P[a].filter(x=>x.vehicle===v.vehicle&&x.t>v.t).map(x=>x.t);if(h.length){off=Math.min(...h);os=a;break;}}
           if(off===null)off=v.t+leg.ride*60;
-          go(i+1,off,offStop,[...steps,{route:v.route,board:C.names[b],bt:v.t}],lv);
+          go(i+1,off,os,[...segs,{k:'walk',m,to:C.names[b]},{k:'wait',min:(v.t-at)/60},
+            {k:'ride',name:rname(v.route,v.bus),route:v.route,board:C.names[b],bt:v.t,alight:C.names[os],at:off}],lv);
           if(i>0)break;
         }
       }
@@ -63,24 +70,41 @@ async function load(){
     go(0,now,null,[],null);
   }
   let f=[];
-  all.sort((a,b)=>b.leave-a.leave).forEach(p=>{if(!f.length||p.arrive<Math.min(...f.map(q=>q.arrive))-30)f.push(p)});
+  [...A].sort((a,b)=>b.leave-a.leave||a.arrive-b.arrive).forEach(p=>{if(!f.length||p.arrive<Math.min(...f.map(q=>q.arrive))-30)f.push(p)});
   f=f.filter(p=>!f.some(q=>q.arrive<p.arrive&&q.leave>=p.leave-90)).sort((a,b)=>a.leave-b.leave);
-  plans=f;fetchedAt=Date.now();render();
+  front=f;all=A;fetchedAt=Date.now();render();
 }
 const hm=t=>new Date(t*1000).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}).replace(/\s?[AP]M/i,'');
+const mn=v=>Math.max(1,Math.round(v));
+function leastWalking(now){
+  const ok=all.filter(p=>p.leave>now-20);if(!ok.length)return null;
+  const best=Math.min(...ok.map(p=>p.arrive));
+  return ok.filter(p=>p.arrive<=best+600).sort((a,b)=>Math.round(a.walk)-Math.round(b.walk)||Math.round(a.arrive/60)-Math.round(b.arrive/60)||b.leave-a.leave)[0];
+}
+function segHtml(p){
+  let h=`<div class="seg">Unit to street: ${mn(C.cfg[dir].door)} min</div>`;
+  for(const x of p.segs){
+    if(x.k==='walk'&&x.m>=40)h+=`<div class="seg w">Walk ${mn(x.m/C.walk)} min (${Math.round(x.m/10)*10} m) to ${x.to}</div>`;
+    else if(x.k==='wait'&&x.min>=0.5)h+=`<div class="seg wt">Wait ${mn(x.min)} min at the stop</div>`;
+    else if(x.k==='ride')h+=`<div class="leg"><span class="r">${x.route}</span>${x.name} ${hm(x.bt)} &rarr; off at ${x.alight} ${hm(x.at)}</div>`;
+  }
+  return h+`<div class="seg tot">Walking ${mn(p.walk)} min total &middot; waiting outside ${mn(p.wait)} min</div>`;
+}
 function render(){
   document.getElementById('tg').className=dir==='gabby'?'on':'';
   document.getElementById('th').className=dir==='home'?'on':'';
+  document.getElementById('mf').className=mode==='fast'?'on':'';
+  document.getElementById('ml').className=mode==='less'?'on':'';
   const o=document.getElementById('out'), now=Date.now()/1000;
-  const live=plans.filter(p=>p.leave>now-20);
-  if(!live.length){o.innerHTML=fetchedAt?'<div class="sub">No live predictions right now. Retrying...</div>':'<div class="sub">Loading live TTC times...</div>';return;}
-  const p=live[0], s=Math.max(0,Math.round(p.leave-now)), m=Math.floor(s/60), sec=s%60;
-  const cls=s<=20?'go':s<=120?'soon':'';
-  const txt=s<=20?'GO NOW':`${m}:${String(sec).padStart(2,'0')}`;
+  const live=front.filter(p=>p.leave>now-20);
+  let p=mode==='less'?leastWalking(now):live[0];
+  if(!p){o.innerHTML=fetchedAt?'<div class="sub">No live predictions right now. Retrying...</div>':'<div class="sub">Loading live TTC times...</div>';return;}
+  const s=Math.max(0,Math.round(p.leave-now)), cls=s<=20?'go':s<=120?'soon':'';
+  const txt=s<=20?'GO NOW':`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
   let h=`<div class="card"><div class="sub">Leave in</div><div class="big ${cls}">${txt}</div>
-   <div class="sub">Out the door ${hm(p.leave)} &middot; there ${hm(p.arrive)} (${Math.round((p.arrive-p.leave)/60)} min)</div>
-   ${p.steps.map(x=>`<div class="leg"><span class="r">${x.route}</span>${x.board} &middot; ${hm(x.bt)}</div>`).join('')}</div>`;
-  if(live.length>1)h+=`<div class="card"><div class="sub">Later options</div>${live.slice(1,4).map(q=>`<div class="alt"><span>Leave ${hm(q.leave)}</span><span>there ${hm(q.arrive)} &middot; ${q.steps.map(x=>x.route).join(' + ')}</span></div>`).join('')}</div>`;
+   <div class="sub">Out the door ${hm(p.leave)} &middot; there ${hm(p.arrive)} (${Math.round((p.arrive-p.leave)/60)} min)</div>${segHtml(p)}</div>`;
+  const later=live.filter(q=>q.leave>p.leave+30).slice(0,3);
+  if(later.length)h+=`<div class="card"><div class="sub">Later options</div>${later.map(q=>`<div class="alt"><span>Leave ${hm(q.leave)}</span><span>there ${hm(q.arrive)} &middot; ${q.segs.filter(x=>x.k==='ride').map(x=>x.route).join(' + ')} &middot; walk ${mn(q.walk)}m</span></div>`).join('')}</div>`;
   o.innerHTML=h;
   document.getElementById('foot').textContent=`Live TTC data, refreshed ${Math.round((Date.now()-fetchedAt)/1000)}s ago`;
 }
